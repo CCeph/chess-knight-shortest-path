@@ -79,8 +79,11 @@ const gameBoard = {
   findShortestPath(currentBoard, targetPosition) {
     let currentShortestPathLength;
 
+    currentBoard.root.possibleMoves.forEach(move => {
+      currentShortestPathLength = this.createBranch(currentBoard.root, move, currentShortestPathLength, targetPosition);
+    });
+
     // Create branch 1
-    currentShortestPathLength = this.createBranch(currentBoard.root, 0, currentShortestPathLength, targetPosition);
 
     // Create branch 2
 
