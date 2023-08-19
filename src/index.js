@@ -21,7 +21,7 @@ const gameBoard = {
     }
   },
 
-  createKnightNode(position) {
+  createKnightNode(position, parentNode) {
     const possibleMoves = [
       { x: position.x + 1, y: position.y + 2 },
       { x: position.x + 2, y: position.y + 1 },
@@ -33,15 +33,38 @@ const gameBoard = {
       { x: position.x - 1, y: position.y + 2 },
     ];
 
-    return { position, possibleMoves };
+    return { position, possibleMoves, parentNode };
   },
 
   createGameBoardTree(knightPosition) {
-    return { root: this.createKnightNode(knightPosition) };
+    return { root: this.createKnightNode(knightPosition, null) };
   },
+
+  createBranch(branchRoot, moveSet, currentShortestPathLength) {
+    // Base case 1
+    
+    let newPosition = branchRoot.possibleMoves[moveSet];
+  }
 
   findShortestPath(currentBoard, targetPosition) {
     let currentShortestPathLength;
+
+    // Create branch 1
+    currentShortestPathLength = this.createBranch(currentBoard.root, 0, currentShortestPathLength);
+
+    // Create branch 2
+
+    // Create branch 3
+
+    // Create branch 4
+
+    // Create branch 5
+
+    // Create branch 6
+
+    // Create branch 7
+
+    // Create branch 8
   },
 
   knightMoves(startPosition, endPosition) {
