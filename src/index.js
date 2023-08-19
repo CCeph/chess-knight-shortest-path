@@ -49,20 +49,20 @@ const gameBoard = {
       currentNode = node.parentNode;
     }
     return depth;
-  }
+  },
 
   createBranch(branchRoot, moveSet, currentShortestPathLength, targetPosition) {
     // Base case 1
-    let branchRootDepth = depth(branchRoot);
+    const branchRootDepth = depth(branchRoot);
     if (branchRootDepth > currentShortestPathLength || branchRootDepth > 6) {
-      branchRoot[`move${moveSet}`] = "Branch too long"
+      branchRoot[`move${moveSet}`] = "Branch too long";
       return currentShortestPathLength;
     }
 
     // Base case 2
-    let newPosition = branchRoot.possibleMoves[moveSet];
+    const newPosition = branchRoot.possibleMoves[moveSet];
     if (newPosition.x > 8 || newPosition.y > 8) {
-      branchRoot[`move${moveSet}`] = "Off of board"
+      branchRoot[`move${moveSet}`] = "Off of board";
       return currentShortestPathLength;
     }
 
@@ -73,14 +73,23 @@ const gameBoard = {
       return branchRootDepth + 1;
     }
 
-    this.createBranch(branchRoot[`move${moveSet}`], moveSet, currentShortestPathLength);
-  }
+    this.createBranch(
+      branchRoot[`move${moveSet}`],
+      moveSet,
+      currentShortestPathLength
+    );
+  },
 
   findShortestPath(currentBoard, targetPosition) {
     let currentShortestPathLength;
 
-    currentBoard.root.possibleMoves.forEach(move => {
-      currentShortestPathLength = this.createBranch(currentBoard.root, move, currentShortestPathLength, targetPosition);
+    currentBoard.root.possibleMoves.forEach((move) => {
+      currentShortestPathLength = this.createBranch(
+        currentBoard.root,
+        move,
+        currentShortestPathLength,
+        targetPosition
+      );
     });
 
     // Create branch 1
