@@ -36,7 +36,16 @@ const gameBoard = {
     return { position, possibleMoves };
   },
 
-  createGameBoardTree(knightPosition = undefined) {
+  createGameBoardTree(knightPosition) {
     return { root: this.createKnightNode(knightPosition) };
+  },
+
+  findShortestPath(currentBoard, targetPosition) {
+    let currentShortestPathLength;
+  },
+
+  knightMoves(startPosition, endPosition) {
+    const currentBoard = this.createGameBoardTree(startPosition);
+    this.findShortestPath(currentBoard, endPosition);
   },
 };
