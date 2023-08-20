@@ -51,20 +51,33 @@ const gameBoard = {
     return depth;
   },
 
+  storePathToNode(node) {
+    const pathArray = [];
+    let currentNode = node;
+
+    while (currentNode !== null) {
+      pathArray.push(currentNode);
+      currentNode = currentNode.parentNode;
+    }
+    pathArray.reverse();
+    return pathArray;
+  },
+
   createBranch(
     branchRoot,
     moveSet,
     moveIndex,
-    currentShortestPathLength,
+    currentShortestPath,
     targetPosition
   ) {
     // Base case 1
     const branchRootDepth = this.depth(branchRoot);
     const moveName = `move${moveIndex}`;
-    if (branchRootDepth > currentShortestPathLength || branchRootDepth > 6) {
+    let shortestPath = { length: currentShortestPath.length, path: [] };
+    if (branchRootDepth >= shortestPath.length || branchRootDepth > 6) {
       // eslint-disable-next-line no-param-reassign
       branchRoot[moveName] = "Branch too long";
-      return currentShortestPathLength;
+      return shortestPath;
     }
 
     // Base case 2
@@ -72,7 +85,7 @@ const gameBoard = {
     if (newPosition.x > 8 || newPosition.y > 8) {
       // eslint-disable-next-line no-param-reassign
       branchRoot[moveName] = "Off of board";
-      return currentShortestPathLength;
+      return shortestPath;
     }
 
     // eslint-disable-next-line no-param-reassign
@@ -85,37 +98,40 @@ const gameBoard = {
       newPosition.x === targetPosition.x &&
       newPosition.y === targetPosition.y
     ) {
-      return branchRootDepth + 1;
+      shortestPath.length = branchRootDepth + 1;
+      shortestPath.path = this.storePathToNode(newChild);
+      return shortestPath;
     }
 
     newChild.possibleMoves.forEach((move, childMoveIndex) => {
       // eslint-disable-next-line no-param-reassign
-      currentShortestPathLength = this.createBranch(
+      shortestPath = this.createBranch(
         newChild,
         move,
         childMoveIndex,
-        currentShortestPathLength,
+        shortestPath,
         targetPosition
       );
     });
-    return currentShortestPathLength;
+    return shortestPath;
   },
 
   findShortestPath(currentBoard, targetPosition) {
-    let currentShortestPathLength;
+    let currentShortestPath = { length: 7, path: [] };
 
     currentBoard.root.possibleMoves.forEach((move, moveIndex) => {
-      currentShortestPathLength = this.createBranch(
+      currentShortestPath = this.createBranch(
         currentBoard.root,
         move,
         moveIndex,
-        currentShortestPathLength,
+        currentShortestPath,
         targetPosition
       );
+      console.log(currentShortestPath);
     });
 
     console.log(currentBoard);
-    console.log(currentShortestPathLength);
+    console.log(currentShortestPath);
     // Create branch 1
 
     // Create branch 2
@@ -139,4 +155,6 @@ const gameBoard = {
   },
 };
 
-gameBoard.knightMoves({ x: 4, y: 4 }, { x: 1, y: 8 });
+gameBoard.knightMoves({ x: 4, y: 4 }, { x: 5, y: 6 });
+
+// 1,8
