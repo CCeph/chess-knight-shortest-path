@@ -77,6 +77,7 @@ const gameBoard = {
 
     // eslint-disable-next-line no-param-reassign
     const newChild = this.createKnightNode(newPosition, branchRoot);
+    // eslint-disable-next-line no-param-reassign
     branchRoot[moveName] = newChild;
 
     // Base case 3
@@ -87,11 +88,12 @@ const gameBoard = {
       return branchRootDepth + 1;
     }
 
-    newChild.possibleMoves.forEach((move, moveIndex) => {
+    newChild.possibleMoves.forEach((move, childMoveIndex) => {
+      // eslint-disable-next-line no-param-reassign
       currentShortestPathLength = this.createBranch(
         newChild,
         move,
-        moveIndex,
+        childMoveIndex,
         currentShortestPathLength,
         targetPosition
       );
