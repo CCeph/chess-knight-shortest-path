@@ -46,37 +46,47 @@ const gameBoard = {
 
     while (currentNode !== null) {
       depth += 1;
-      currentNode = node.parentNode;
+      currentNode = currentNode.parentNode;
     }
     return depth;
   },
 
   createBranch(branchRoot, moveSet, currentShortestPathLength, targetPosition) {
     // Base case 1
-    const branchRootDepth = depth(branchRoot);
+    const branchRootDepth = this.depth(branchRoot);
     if (branchRootDepth > currentShortestPathLength || branchRootDepth > 6) {
+      // eslint-disable-next-line no-param-reassign
       branchRoot[`move${moveSet}`] = "Branch too long";
       return currentShortestPathLength;
     }
 
     // Base case 2
-    const newPosition = branchRoot.possibleMoves[moveSet];
+    const newPosition = moveSet;
     if (newPosition.x > 8 || newPosition.y > 8) {
+      // eslint-disable-next-line no-param-reassign
       branchRoot[`move${moveSet}`] = "Off of board";
       return currentShortestPathLength;
     }
 
-    branchRoot[`move${moveSet}`] = this.createKnightNode(newPosition);
+    // eslint-disable-next-line no-param-reassign
+    branchRoot[`move${moveSet}`] = this.createKnightNode(
+      newPosition,
+      branchRoot
+    );
 
     // Base case 3
-    if (newPosition === targetPosition) {
+    if (
+      newPosition.x === targetPosition.x &&
+      newPosition.y === targetPosition.y
+    ) {
       return branchRootDepth + 1;
     }
 
-    this.createBranch(
+    return this.createBranch(
       branchRoot[`move${moveSet}`],
       moveSet,
-      currentShortestPathLength
+      currentShortestPathLength,
+      targetPosition
     );
   },
 
@@ -114,3 +124,5 @@ const gameBoard = {
     this.findShortestPath(currentBoard, endPosition);
   },
 };
+
+gameBoard.knightMoves({ x: 4, y: 4 }, { x: 5, y: 6 });
