@@ -87,13 +87,16 @@ const gameBoard = {
       return branchRootDepth + 1;
     }
 
-    return this.createBranch(
-      newChild,
-      newChild.possibleMoves[moveIndex],
-      moveIndex,
-      currentShortestPathLength,
-      targetPosition
-    );
+    newChild.possibleMoves.forEach((move, moveIndex) => {
+      currentShortestPathLength = this.createBranch(
+        newChild,
+        move,
+        moveIndex,
+        currentShortestPathLength,
+        targetPosition
+      );
+    });
+    return currentShortestPathLength;
   },
 
   findShortestPath(currentBoard, targetPosition) {
@@ -134,4 +137,4 @@ const gameBoard = {
   },
 };
 
-gameBoard.knightMoves({ x: 4, y: 4 }, { x: 6, y: 8 });
+gameBoard.knightMoves({ x: 4, y: 4 }, { x: 1, y: 8 });
