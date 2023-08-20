@@ -74,10 +74,10 @@ const gameBoard = {
     const branchRootDepth = this.depth(branchRoot);
     const moveName = `move${moveIndex}`;
     let shortestPath = {
-      length: currentShortestPath.length,
+      numberOfMoves: currentShortestPath.numberOfMoves,
       path: currentShortestPath.path,
     };
-    if (branchRootDepth >= shortestPath.length || branchRootDepth > 6) {
+    if (branchRootDepth >= shortestPath.numberOfMoves || branchRootDepth > 6) {
       // eslint-disable-next-line no-param-reassign
       branchRoot[moveName] = "Branch too long";
       return shortestPath;
@@ -85,7 +85,12 @@ const gameBoard = {
 
     // Base case 2
     const newPosition = moveSet;
-    if (newPosition.x > 8 || newPosition.y > 8) {
+    if (
+      newPosition.x > 7 ||
+      newPosition.y > 7 ||
+      newPosition.x < 0 ||
+      newPosition.y < 0
+    ) {
       // eslint-disable-next-line no-param-reassign
       branchRoot[moveName] = "Off of board";
       return shortestPath;
@@ -101,7 +106,7 @@ const gameBoard = {
       newPosition.x === targetPosition.x &&
       newPosition.y === targetPosition.y
     ) {
-      shortestPath.length = branchRootDepth + 1;
+      shortestPath.numberOfMoves = branchRootDepth;
       shortestPath.path = this.storePathToNode(newChild);
       return shortestPath;
     }
@@ -120,7 +125,7 @@ const gameBoard = {
   },
 
   findShortestPath(currentBoard, targetPosition) {
-    let currentShortestPath = { length: 7, path: [] };
+    let currentShortestPath = { numberOfMoves: 7, path: [] };
 
     currentBoard.root.possibleMoves.forEach((move, moveIndex) => {
       currentShortestPath = this.createBranch(
@@ -130,34 +135,17 @@ const gameBoard = {
         currentShortestPath,
         targetPosition
       );
-      console.log(currentShortestPath);
     });
 
-    console.log(currentBoard);
-    console.log(currentShortestPath);
-    // Create branch 1
-
-    // Create branch 2
-
-    // Create branch 3
-
-    // Create branch 4
-
-    // Create branch 5
-
-    // Create branch 6
-
-    // Create branch 7
-
-    // Create branch 8
+    return currentShortestPath;
   },
 
   knightMoves(startPosition, endPosition) {
     const currentBoard = this.createGameBoardTree(startPosition);
-    this.findShortestPath(currentBoard, endPosition);
+    const shortestPath = this.findShortestPath(currentBoard, endPosition);
+    return shortestPath;
   },
 };
 
-gameBoard.knightMoves({ x: 4, y: 4 }, { x: 1, y: 8 });
-
-// 1,8
+// Chess board goes from 0,0 to 7,7
+console.log(gameBoard.knightMoves({ x: 4, y: 4 }, { x: 4, y: 5 }));
