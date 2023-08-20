@@ -110,6 +110,7 @@ const gameBoard = {
     });
 
     console.log(currentBoard);
+    console.log(currentShortestPathLength);
     // Create branch 1
 
     // Create branch 2
