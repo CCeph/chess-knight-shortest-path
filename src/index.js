@@ -56,7 +56,7 @@ const gameBoard = {
     let currentNode = node;
 
     while (currentNode !== null) {
-      pathArray.push(currentNode);
+      pathArray.push(currentNode.position);
       currentNode = currentNode.parentNode;
     }
     pathArray.reverse();
@@ -73,7 +73,10 @@ const gameBoard = {
     // Base case 1
     const branchRootDepth = this.depth(branchRoot);
     const moveName = `move${moveIndex}`;
-    let shortestPath = { length: currentShortestPath.length, path: [] };
+    let shortestPath = {
+      length: currentShortestPath.length,
+      path: currentShortestPath.path,
+    };
     if (branchRootDepth >= shortestPath.length || branchRootDepth > 6) {
       // eslint-disable-next-line no-param-reassign
       branchRoot[moveName] = "Branch too long";
@@ -155,6 +158,6 @@ const gameBoard = {
   },
 };
 
-gameBoard.knightMoves({ x: 4, y: 4 }, { x: 5, y: 6 });
+gameBoard.knightMoves({ x: 4, y: 4 }, { x: 1, y: 8 });
 
 // 1,8
